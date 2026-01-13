@@ -1,0 +1,55 @@
+{
+    "name": "@accelade/actions",
+    "version": "0.1.0",
+    "description": "Action buttons and modals for Accelade - Filament-style actions with Blade templates",
+    "author": "Fady Mondy <info@3x1.io> (https://3x1.io)",
+    "license": "MIT",
+    "homepage": "https://github.com/accelade/actions",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/accelade/actions.git"
+    },
+    "bugs": {
+        "url": "https://github.com/accelade/actions/issues"
+    },
+    "private": true,
+    "type": "module",
+    "main": "dist/actions.js",
+    "module": "dist/actions.esm.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/actions.esm.js",
+            "require": "./dist/actions.js"
+        }
+    },
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "typecheck": "tsc --noEmit",
+        "demo": "npx serve . -p 3000",
+        "test": "playwright test",
+        "test:e2e": "playwright test",
+        "test:e2e:ui": "playwright test --ui",
+        "test:e2e:headed": "playwright test --headed",
+        "test:e2e:debug": "playwright test --debug",
+        "test:install": "playwright install chromium"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.57.0",
+        "@types/node": "^25.0.6",
+        "terser": "^5.31.0",
+        "typescript": "^5.7.0",
+        "vite": "^7.3.1"
+    },
+    "keywords": [
+        "accelade",
+        "laravel",
+        "blade",
+        "actions",
+        "buttons",
+        "modals",
+        "confirmation"
+    ]
+}

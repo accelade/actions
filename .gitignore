@@ -1,0 +1,16 @@
+/vendor/
+/node_modules/
+/dist/
+composer.lock
+package-lock.json
+.phpunit.result.cache
+phpunit.xml
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+coverage/
+.php-cs-fixer.cache
+test-results/
+playwright-report/

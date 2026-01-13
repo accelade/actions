@@ -1,0 +1,8 @@
+[mago]
+version = "0.1.0"
+
+[strictness]
+level = 1
+
+[exclude]
+patterns = ["vendor/**/*", "tests/**/*", "stubs/**/*"]

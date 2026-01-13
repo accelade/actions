@@ -1,0 +1,25 @@
+<?php
+
+namespace {{ namespace }};
+
+use Accelade\Actions\Action;
+
+class {{ class }} extends Action
+{
+    protected function setUp(): void
+    {
+        $this->name ??= '{{ actionName }}';
+
+        $this->label('{{ class }}');
+
+        // $this->icon('icon-name');
+
+        // $this->color('primary');
+
+        // $this->requiresConfirmation();
+
+        // $this->modalHeading('Confirm Action');
+
+        // $this->modalDescription('Are you sure you want to proceed?');
+    }
+}
