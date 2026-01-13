@@ -1,16 +1,39 @@
-/vendor/
-/node_modules/
-/dist/
-composer.lock
-package-lock.json
+# Dependencies
+node_modules/
+.idea
+.phpunit.cache
 .phpunit.result.cache
-phpunit.xml
+.DS_Store
+Thumbs.db
+/vendor/
+/.vscode/
+*.log
+.env
+.env.backup
+.env.production
+
+# Build output
+dist/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# IDE
 .idea/
 .vscode/
 *.swp
 *.swo
+
+# OS
 .DS_Store
-coverage/
-.php-cs-fixer.cache
-test-results/
-playwright-report/
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Mago binary (installed locally)
+/mago

@@ -10,12 +10,16 @@
         {{-- Basic Action Group --}}
         <div class="bg-white dark:bg-slate-800 rounded-lg shadow p-6">
             <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Dropdown Action Group</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Click the button to see a dropdown menu of actions.</p>
             <div class="flex justify-end">
                 @php
                     $actionGroup = \Accelade\Actions\ActionGroup::make([
-                        \Accelade\Actions\ViewAction::make()->url('#'),
-                        \Accelade\Actions\EditAction::make()->url('#'),
-                        \Accelade\Actions\DeleteAction::make()->url('#'),
+                        \Accelade\Actions\ViewAction::make()
+                            ->action(fn () => \Accelade\Facades\Notify::info('View', 'Viewing item...')),
+                        \Accelade\Actions\EditAction::make()
+                            ->action(fn () => \Accelade\Facades\Notify::info('Edit', 'Opening editor...')),
+                        \Accelade\Actions\DeleteAction::make()
+                            ->action(fn () => \Accelade\Facades\Notify::danger('Deleted', 'Item deleted.')),
                     ])->tooltip('More actions');
                 @endphp
 
@@ -37,13 +41,13 @@
                             ->icon('check')
                             ->color('success')
                             ->size('sm')
-                            ->url('#'),
+                            ->action(fn () => \Accelade\Facades\Notify::success('Approved', 'Item approved!')),
                         \Accelade\Actions\Action::make('reject')
                             ->label('Reject')
                             ->icon('x')
                             ->color('danger')
                             ->size('sm')
-                            ->url('#'),
+                            ->action(fn () => \Accelade\Facades\Notify::danger('Rejected', 'Item rejected.')),
                     ])->dropdown(false);
                 @endphp
 
@@ -56,21 +60,22 @@
         {{-- Custom Styled Group --}}
         <div class="bg-white dark:bg-slate-800 rounded-lg shadow p-6">
             <h3 class="text-lg font-semibold mb-4 text-slate-900 dark:text-white">Custom Styled Group</h3>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-4">Customize the trigger button with label, icon, and color.</p>
             <div class="flex justify-end">
                 @php
                     $customGroup = \Accelade\Actions\ActionGroup::make([
                         \Accelade\Actions\Action::make('duplicate')
                             ->label('Duplicate')
                             ->icon('copy')
-                            ->url('#'),
+                            ->action(fn () => \Accelade\Facades\Notify::success('Duplicated', 'Item duplicated!')),
                         \Accelade\Actions\Action::make('archive')
                             ->label('Archive')
                             ->icon('archive')
-                            ->url('#'),
+                            ->action(fn () => \Accelade\Facades\Notify::warning('Archived', 'Item archived.')),
                         \Accelade\Actions\Action::make('export')
                             ->label('Export')
                             ->icon('download')
-                            ->url('#'),
+                            ->action(fn () => \Accelade\Facades\Notify::info('Exporting', 'Export started...')),
                     ])
                         ->label('Actions')
                         ->icon('settings')

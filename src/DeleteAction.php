@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Accelade\Actions;
 
 class DeleteAction extends Action

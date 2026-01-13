@@ -89,6 +89,17 @@ export class ActionManager {
      * Parse action configuration from button data attributes
      */
     private parseButtonConfig(button: HTMLElement): ActionConfig {
+        // Parse record from data attribute if present
+        let record: unknown = undefined;
+        const recordAttr = button.getAttribute('data-action-record');
+        if (recordAttr) {
+            try {
+                record = JSON.parse(recordAttr);
+            } catch {
+                console.warn('[Actions] Failed to parse record data');
+            }
+        }
+
         return {
             name: button.getAttribute('data-action-name') || 'action',
             actionUrl: button.getAttribute('data-action-url') || undefined,
@@ -103,6 +114,7 @@ export class ActionManager {
             preserveScroll: button.hasAttribute('data-preserve-scroll'),
             preserveState: button.hasAttribute('data-preserve-state'),
             hasAction: !!button.getAttribute('data-action-token'),
+            record,
         };
     }
 
@@ -136,29 +148,48 @@ export class ActionManager {
                 ...(options.headers || {}),
             };
 
-            const body = JSON.stringify({
-                _token: config.actionToken,
-                record: options.record,
-                data: options.data || {},
-            });
+            const method = (config.method || 'POST').toUpperCase();
+            const isBodylessMethod = method === 'GET' || method === 'HEAD';
+
+            // Use record from options if provided, otherwise use record from config (parsed from data attribute)
+            const record = options.record ?? config.record;
+
+            let url = config.actionUrl;
+            let body: string | undefined;
+
+            if (isBodylessMethod) {
+                // For GET/HEAD, send data as query parameters
+                const params = new URLSearchParams();
+                params.set('action_token', config.actionToken);
+                if (record !== undefined) {
+                    params.set('record', JSON.stringify(record));
+                }
+                if (options.data && Object.keys(options.data).length > 0) {
+                    params.set('data', JSON.stringify(options.data));
+                }
+                const separator = url.includes('?') ? '&' : '?';
+                url = `${url}${separator}${params.toString()}`;
+            } else {
+                // For POST/PUT/PATCH/DELETE, send as JSON body
+                body = JSON.stringify({
+                    action_token: config.actionToken,
+                    record,
+                    data: options.data || {},
+                });
+            }
 
             // Execute request
-            const response = await fetch(config.actionUrl, {
-                method: config.method || 'POST',
+            const response = await fetch(url, {
+                method,
                 headers,
-                body,
+                ...(body ? { body } : {}),
             });
 
             const result: ActionResult = await response.json();
 
             // Handle success
             if (result.success) {
-                // Show success notification via Accelade if available
-                if (result.message && window.Accelade?.notify) {
-                    window.Accelade.notify.success('Success', result.message);
-                }
-
-                // Handle redirect
+                // Handle redirect first - if redirecting, notifications will come from session
                 if (result.redirect) {
                     if (window.Accelade?.router) {
                         window.Accelade.router.navigate(result.redirect, {
@@ -167,6 +198,23 @@ export class ActionManager {
                         });
                     } else {
                         window.location.href = result.redirect;
+                    }
+                } else {
+                    // Only show notifications if NOT redirecting (otherwise they come from session)
+                    if (result.notifications && result.notifications.length > 0 && window.Accelade?.notify) {
+                        for (const notif of result.notifications) {
+                            const type = notif.status || notif.type || 'success';
+                            const title = notif.title || '';
+                            const message = notif.body || notif.message || '';
+                            if (typeof window.Accelade.notify[type] === 'function') {
+                                window.Accelade.notify[type](title, message);
+                            } else {
+                                window.Accelade.notify.success(title, message);
+                            }
+                        }
+                    } else if (result.message && window.Accelade?.notify) {
+                        // Fallback: show simple message notification
+                        window.Accelade.notify.success('Success', result.message);
                     }
                 }
 

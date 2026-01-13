@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Accelade\Actions;
 
 class ViewAction extends Action
@@ -14,6 +16,6 @@ class ViewAction extends Action
 
         $this->color('secondary');
 
-        $this->method('GET');
+        $this->method('POST');
     }
 }

@@ -41,9 +41,14 @@ declare global {
 
 /**
  * Initialize Actions when DOM is ready
+ * Uses a flag to prevent multiple initializations on SPA navigation
  */
 function init(): void {
-    // Wait for Accelade to be available
+    // Prevent multiple initializations (important for SPA navigation)
+    if (window.AcceladeActions) {
+        return;
+    }
+
     const checkAccelade = (): void => {
         const manager = initActions();
 
@@ -58,8 +63,6 @@ function init(): void {
         document.dispatchEvent(new CustomEvent('actions:ready', {
             detail: { manager },
         }));
-
-        console.log('[Actions] Initialized');
     };
 
     if (document.readyState === 'loading') {

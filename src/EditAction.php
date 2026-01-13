@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Accelade\Actions;
 
 class EditAction extends Action
@@ -14,6 +16,6 @@ class EditAction extends Action
 
         $this->color('primary');
 
-        $this->method('GET');
+        $this->method('POST');
     }
 }

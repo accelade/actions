@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(config('actions.middleware', ['web']))
     ->prefix(config('actions.prefix', 'actions'))
     ->group(function () {
-        // Action execution endpoint
-        Route::post('/execute', [ActionController::class, 'execute'])
+        // Action execution endpoint (supports all HTTP methods)
+        Route::match(['get', 'post', 'put', 'patch', 'delete'], '/execute', [ActionController::class, 'execute'])
             ->name('actions.execute');
 
         // Asset routes (when asset_mode is 'route')
@@ -18,9 +18,12 @@ Route::middleware(config('actions.middleware', ['web']))
                     abort(404, 'Actions JS not found. Run: npm run build');
                 }
 
+                $etag = md5_file($path);
+
                 return response()->file($path, [
                     'Content-Type' => 'application/javascript',
-                    'Cache-Control' => 'public, max-age=31536000',
+                    'Cache-Control' => 'public, max-age=3600',
+                    'ETag' => $etag,
                 ]);
             })->name('actions.js');
 

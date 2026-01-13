@@ -108,6 +108,28 @@ export interface ActionConfig {
 
     /** Use SPA navigation */
     spa?: boolean;
+
+    /** Record data parsed from button data attribute */
+    record?: unknown;
+}
+
+/**
+ * Notification data from action response
+ */
+export interface ActionNotification {
+    /** Notification ID */
+    id?: string;
+
+    /** Notification title */
+    title?: string;
+
+    /** Notification body/message */
+    body?: string;
+    message?: string;
+
+    /** Notification type/status */
+    status?: 'success' | 'info' | 'warning' | 'danger';
+    type?: 'success' | 'info' | 'warning' | 'danger';
 }
 
 /**
@@ -122,6 +144,9 @@ export interface ActionResult {
 
     /** Redirect URL */
     redirect?: string;
+
+    /** Notifications to display */
+    notifications?: ActionNotification[];
 
     /** Additional data */
     data?: Record<string, unknown>;

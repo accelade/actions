@@ -1,7 +1,7 @@
 @props([
     'group' => null,
     'record' => null,
-    'align' => 'right',
+    'align' => 'end',
 ])
 
 @php
@@ -43,11 +43,11 @@
         default => 'p-2',
     };
 
-    // Alignment
+    // Alignment with RTL support (using logical properties)
     $alignClass = match($align) {
-        'left' => 'left-0',
-        'center' => 'left-1/2 -translate-x-1/2',
-        default => 'right-0',
+        'start', 'left' => 'start-0 rtl:start-auto rtl:end-0',
+        'center' => 'start-1/2 -translate-x-1/2 rtl:translate-x-1/2',
+        default => 'end-0 rtl:end-auto rtl:start-0',
     };
 @endphp
 
@@ -57,13 +57,13 @@
         <button
             type="button"
             @click="toggle()"
-            class="inline-flex items-center justify-center rounded-lg {{ $buttonSize }} text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            class="inline-flex items-center justify-center gap-1 rounded-lg {{ $buttonSize }} text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-slate-900 dark:focus:ring-indigo-400"
             @if($tooltip) title="{{ $tooltip }}" @endif
             aria-haspopup="true"
             :aria-expanded="toggled"
         >
             @if($label)
-                <span class="mr-1">{{ $label }}</span>
+                <span>{{ $label }}</span>
             @endif
             <x-accelade::icon :name="$icon" :class="$iconSize" />
         </button>
@@ -73,7 +73,7 @@
             a-show="toggled"
             a-cloak
             @click.outside="close()"
-            class="absolute {{ $alignClass }} mt-2 w-48 rounded-lg bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 z-50"
+            class="absolute {{ $alignClass }} mt-2 w-48 rounded-lg bg-white dark:bg-slate-800 shadow-lg ring-1 ring-black/5 dark:ring-white/10 z-50"
             role="menu"
             aria-orientation="vertical"
         >
@@ -115,11 +115,11 @@
                             :cancelButton="$modalCancelLabel"
                             :confirmDanger="$confirmDanger"
                             @click="close()"
-                            class="flex items-center gap-2 w-full px-4 py-2 text-sm {{ $textColor }} hover:bg-gray-100 dark:hover:bg-gray-700 {{ $actionDisabled ? 'opacity-50 cursor-not-allowed' : '' }}"
+                            class="flex items-center gap-2 w-full px-4 py-2 text-sm {{ $textColor }} hover:bg-gray-100 dark:hover:bg-slate-700 {{ $actionDisabled ? 'opacity-50 cursor-not-allowed' : '' }}"
                             role="menuitem"
                         >
                             @if($actionIcon)
-                                <x-actions::icon :name="$actionIcon" class="w-4 h-4" />
+                                <x-accelade::icon :name="$actionIcon" class="w-4 h-4 rtl:order-last" />
                             @endif
                             <span>{{ $actionLabel }}</span>
                         </x-accelade::link>
@@ -130,6 +130,7 @@
                             data-action-token="{{ $actionToken }}"
                             data-action-url="{{ $actionUrlEndpoint }}"
                             data-action-method="{{ $actionMethod }}"
+                            @if($record !== null) data-action-record="{{ json_encode($record, JSON_THROW_ON_ERROR) }}" @endif
                             @if($requiresConfirmation)
                                 data-confirm="{{ $modalDescription ?: __('actions::actions.modal.confirm_description') }}"
                                 @if($modalHeading) data-confirm-title="{{ $modalHeading }}" @endif
@@ -138,12 +139,12 @@
                                 @if($confirmDanger) data-confirm-danger="true" @endif
                             @endif
                             @click="close()"
-                            class="flex items-center gap-2 w-full px-4 py-2 text-sm {{ $textColor }} hover:bg-gray-100 dark:hover:bg-gray-700 {{ $actionDisabled ? 'opacity-50 cursor-not-allowed' : '' }}"
+                            class="flex items-center gap-2 w-full px-4 py-2 text-sm {{ $textColor }} hover:bg-gray-100 dark:hover:bg-slate-700 {{ $actionDisabled ? 'opacity-50 cursor-not-allowed' : '' }}"
                             role="menuitem"
                             @if($actionDisabled) disabled @endif
                         >
                             @if($actionIcon)
-                                <x-actions::icon :name="$actionIcon" class="w-4 h-4" />
+                                <x-accelade::icon :name="$actionIcon" class="w-4 h-4 rtl:order-last" />
                             @endif
                             <span>{{ $actionLabel }}</span>
                         </button>
@@ -156,7 +157,7 @@
     {{-- Inline actions (not dropdown) --}}
     <div class="flex items-center gap-2">
         @foreach($actions as $actionData)
-            <x-actions::action :action="$actionData" :record="$record" />
+            <x-accelade::action :action="$actionData" :record="$record" />
         @endforeach
     </div>
 @endif

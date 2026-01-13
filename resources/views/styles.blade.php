@@ -1,27 +1,44 @@
 {{-- Actions CSS - Minimal styling for actions (most styles come from Tailwind) --}}
 <style>
     /* Action button loading state */
+    .action-button[data-loading],
     [data-action-button][data-loading] {
         pointer-events: none;
-        opacity: 0.7;
+        opacity: 0.75;
+        cursor: wait;
     }
 
-    [data-action-button][data-loading]::after {
-        content: '';
-        display: inline-block;
-        width: 1em;
-        height: 1em;
-        margin-left: 0.5em;
-        border: 2px solid currentColor;
-        border-right-color: transparent;
-        border-radius: 50%;
-        animation: actions-spin 0.6s linear infinite;
+    /* Hide icon, show spinner when loading */
+    .action-button[data-loading] .action-icon,
+    [data-action-button][data-loading] .action-icon {
+        display: none !important;
     }
 
-    @keyframes actions-spin {
+    .action-button[data-loading] .action-spinner,
+    [data-action-button][data-loading] .action-spinner {
+        display: inline-flex !important;
+    }
+
+    /* Hide spinner by default */
+    .action-button .action-spinner,
+    [data-action-button] .action-spinner {
+        display: none;
+    }
+
+    /* Spinner animation */
+    @keyframes action-spin {
         to {
             transform: rotate(360deg);
         }
+    }
+
+    .action-spinner svg {
+        animation: action-spin 0.8s linear infinite;
+    }
+
+    /* RTL Support for dropdowns */
+    [dir="rtl"] [data-action-dropdown] {
+        transform-origin: top left;
     }
 
     /* Dark mode variables */
@@ -33,10 +50,10 @@
     }
 
     .dark, [data-theme="dark"] {
-        --actions-bg: #1f2937;
-        --actions-text: #f9fafb;
-        --actions-border: #374151;
-        --actions-hover: #374151;
+        --actions-bg: #1e293b;
+        --actions-text: #f1f5f9;
+        --actions-border: #334155;
+        --actions-hover: #334155;
     }
 
     /* Action dropdown transitions */

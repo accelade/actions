@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Accelade\Actions;
 
 use Illuminate\Contracts\Support\Arrayable;

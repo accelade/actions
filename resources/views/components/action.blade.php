@@ -48,10 +48,10 @@
     $colors = config('actions.colors', []);
     $colorConfig = $colors[$color] ?? $colors['primary'] ?? [];
 
-    // Build button classes
-    $baseClasses = 'inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
+    // Build button classes with RTL support (using logical properties)
+    $baseClasses = 'action-button inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-slate-900';
 
-    // Size classes
+    // Size classes with RTL-friendly padding (using logical properties)
     $sizeClasses = match($size) {
         'xs' => 'px-2 py-1 text-xs',
         'sm' => 'px-3 py-1.5 text-sm',
@@ -60,16 +60,16 @@
         default => 'px-4 py-2 text-sm',
     };
 
-    // Color classes
+    // Color classes (now include dark mode from config)
     if ($isOutlined) {
-        $colorClasses = ($colorConfig['outline'] ?? 'border border-gray-300 text-gray-700 hover:bg-gray-50') . ' bg-transparent border';
+        $colorClasses = ($colorConfig['outline'] ?? 'border border-gray-300 text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800') . ' bg-transparent border';
     } else {
-        $colorClasses = ($colorConfig['bg'] ?? 'bg-indigo-600 hover:bg-indigo-700') . ' ' . ($colorConfig['text'] ?? 'text-white');
+        $colorClasses = ($colorConfig['bg'] ?? 'bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600') . ' ' . ($colorConfig['text'] ?? 'text-white');
     }
 
-    // Variant-specific classes
+    // Variant-specific classes with dark mode support (using config colors)
     if ($variant === 'link') {
-        $baseClasses = 'inline-flex items-center gap-1 font-medium transition-colors duration-200 underline-offset-4 hover:underline';
+        $baseClasses = 'action-button inline-flex items-center gap-1 font-medium transition-colors duration-200 underline-offset-4 hover:underline';
         $sizeClasses = match($size) {
             'xs' => 'text-xs',
             'sm' => 'text-sm',
@@ -77,17 +77,10 @@
             'xl' => 'text-lg',
             default => 'text-sm',
         };
-        $colorClasses = match($color) {
-            'primary' => 'text-indigo-600 hover:text-indigo-800',
-            'secondary' => 'text-gray-600 hover:text-gray-800',
-            'success' => 'text-green-600 hover:text-green-800',
-            'danger' => 'text-red-600 hover:text-red-800',
-            'warning' => 'text-yellow-600 hover:text-yellow-800',
-            'info' => 'text-cyan-600 hover:text-cyan-800',
-            default => 'text-indigo-600 hover:text-indigo-800',
-        };
+        // Use config colors for link variant
+        $colorClasses = $colorConfig['link'] ?? 'text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300';
     } elseif ($variant === 'icon') {
-        $baseClasses = 'inline-flex items-center justify-center rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
+        $baseClasses = 'action-button inline-flex items-center justify-center rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-slate-900';
         $sizeClasses = match($size) {
             'xs' => 'p-1',
             'sm' => 'p-1.5',
@@ -100,16 +93,8 @@
     // Disabled classes
     $disabledClasses = $isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer';
 
-    // Focus ring color
-    $focusRingClass = match($color) {
-        'primary' => 'focus:ring-indigo-500',
-        'secondary' => 'focus:ring-gray-500',
-        'success' => 'focus:ring-green-500',
-        'danger' => 'focus:ring-red-500',
-        'warning' => 'focus:ring-yellow-500',
-        'info' => 'focus:ring-cyan-500',
-        default => 'focus:ring-indigo-500',
-    };
+    // Focus ring color from config with dark mode support
+    $focusRingClass = $colorConfig['focus'] ?? 'focus:ring-indigo-500 dark:focus:ring-indigo-400';
 
     // Combine all classes
     $classes = implode(' ', [$baseClasses, $sizeClasses, $colorClasses, $disabledClasses, $focusRingClass]);
@@ -135,6 +120,9 @@
         $dataAttributes['data-action-token'] = $actionToken;
         $dataAttributes['data-action-url'] = $actionUrl;
         $dataAttributes['data-action-method'] = $method;
+        if ($record !== null) {
+            $dataAttributes['data-action-record'] = json_encode($record, JSON_THROW_ON_ERROR);
+        }
     }
 
     if ($preserveScroll) {
@@ -153,6 +141,10 @@
         'xl' => 'w-6 h-6',
         default => 'w-4 h-4',
     };
+
+    // RTL-aware icon position classes
+    $iconBeforeClass = 'rtl:order-last';
+    $iconAfterClass = 'rtl:order-first';
 @endphp
 
 @if($url)
@@ -172,7 +164,7 @@
     :title="$tooltip"
     :disabled="$isDisabled"
     {{ $attributes->except(['class', 'title', 'disabled'])->merge($extraAttributes) }}
->@if($icon && $iconPosition === 'before')<x-accelade::icon :name="$icon" :class="$iconSize" />@endif @if($variant !== 'icon')<span>{{ $label }}</span>@endif @if($icon && $iconPosition === 'after')<x-accelade::icon :name="$icon" :class="$iconSize" />@endif @if($variant === 'icon' && $icon && $iconPosition !== 'after')<x-accelade::icon :name="$icon" :class="$iconSize" />@endif</x-accelade::link>
+>@if($icon && $iconPosition === 'before')<span class="action-icon {{ $iconBeforeClass }}"><x-accelade::icon :name="$icon" :class="$iconSize" /></span>@endif @if($variant !== 'icon')<span>{{ $label }}</span>@endif @if($icon && $iconPosition === 'after')<span class="action-icon {{ $iconAfterClass }}"><x-accelade::icon :name="$icon" :class="$iconSize" /></span>@endif @if($variant === 'icon' && $icon && $iconPosition !== 'after')<span class="action-icon"><x-accelade::icon :name="$icon" :class="$iconSize" /></span>@endif</x-accelade::link>
 @endif
 
 @if(! $url && $hasAction)
@@ -182,8 +174,18 @@
     {{ $attributes->merge(['class' => $classes, 'title' => $tooltip])->merge($dataAttributes)->merge($extraAttributes) }}
     @if($isDisabled) disabled @endif
 >
+    {{-- Loading spinner (hidden by default via inline style, shown via JS when data-loading is set) --}}
+    <span class="action-spinner {{ $iconBeforeClass }}" style="display:none">
+        <svg class="{{ $iconSize }}" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+    </span>
+
     @if($icon && $iconPosition === 'before')
-        <x-accelade::icon :name="$icon" :class="$iconSize" />
+        <span class="action-icon {{ $iconBeforeClass }}">
+            <x-accelade::icon :name="$icon" :class="$iconSize" />
+        </span>
     @endif
 
     @if($variant !== 'icon')
@@ -191,11 +193,21 @@
     @endif
 
     @if($icon && $iconPosition === 'after')
-        <x-accelade::icon :name="$icon" :class="$iconSize" />
+        <span class="action-icon {{ $iconAfterClass }}">
+            <x-accelade::icon :name="$icon" :class="$iconSize" />
+        </span>
     @endif
 
     @if($variant === 'icon' && $icon && $iconPosition !== 'after')
-        <x-accelade::icon :name="$icon" :class="$iconSize" />
+        <span class="action-icon">
+            <x-accelade::icon :name="$icon" :class="$iconSize" />
+        </span>
+        <span class="action-spinner" style="display:none">
+            <svg class="{{ $iconSize }}" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+        </span>
     @endif
 </button>
 @endif
@@ -207,7 +219,9 @@
     @if($isDisabled) disabled @endif
 >
     @if($icon && $iconPosition === 'before')
-        <x-accelade::icon :name="$icon" :class="$iconSize" />
+        <span class="action-icon {{ $iconBeforeClass }}">
+            <x-accelade::icon :name="$icon" :class="$iconSize" />
+        </span>
     @endif
 
     @if($variant !== 'icon')
@@ -215,11 +229,15 @@
     @endif
 
     @if($icon && $iconPosition === 'after')
-        <x-accelade::icon :name="$icon" :class="$iconSize" />
+        <span class="action-icon {{ $iconAfterClass }}">
+            <x-accelade::icon :name="$icon" :class="$iconSize" />
+        </span>
     @endif
 
     @if($variant === 'icon' && $icon && $iconPosition !== 'after')
-        <x-accelade::icon :name="$icon" :class="$iconSize" />
+        <span class="action-icon">
+            <x-accelade::icon :name="$icon" :class="$iconSize" />
+        </span>
     @endif
 </button>
 @endif

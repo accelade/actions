@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Accelade\Actions;
 
 use Accelade\Docs\DocsRegistry;
@@ -40,6 +42,9 @@ class ActionsServiceProvider extends ServiceProvider
         // Register Blade directives
         $this->registerBladeDirectives();
 
+        // Inject scripts/styles into Accelade (if available)
+        $this->injectAcceladeAssets();
+
         // Register documentation sections
         $this->registerDocumentation();
 
@@ -77,14 +82,39 @@ class ActionsServiceProvider extends ServiceProvider
      */
     protected function registerBladeDirectives(): void
     {
-        // @actionsScripts - Include the actions JavaScript
+        // @actionsScripts - Include the actions JavaScript (fallback if not using @acceladeScripts)
         Blade::directive('actionsScripts', function () {
             return "<?php echo view('actions::scripts')->render(); ?>";
         });
 
-        // @actionsStyles - Include the actions CSS
+        // @actionsStyles - Include the actions CSS (fallback if not using @acceladeStyles)
         Blade::directive('actionsStyles', function () {
             return "<?php echo view('actions::styles')->render(); ?>";
+        });
+    }
+
+    /**
+     * Inject Actions scripts and styles into Accelade.
+     * This allows Actions assets to be included automatically with @acceladeScripts/@acceladeStyles.
+     */
+    protected function injectAcceladeAssets(): void
+    {
+        // Only inject if Accelade is available
+        if (! $this->app->bound('accelade')) {
+            return;
+        }
+
+        /** @var \Accelade\Accelade $accelade */
+        $accelade = $this->app->make('accelade');
+
+        // Inject Actions JavaScript
+        $accelade->registerScript('actions', function () {
+            return view('actions::scripts')->render();
+        });
+
+        // Inject Actions CSS
+        $accelade->registerStyle('actions', function () {
+            return view('actions::styles')->render();
         });
     }
 

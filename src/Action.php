@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Accelade\Actions;
 
 use Accelade\Actions\Concerns\CanBeHidden;
@@ -60,10 +62,7 @@ class Action implements Arrayable
      * Configure the action.
      * Override this method in subclasses to set up defaults.
      */
-    protected function setUp(): void
-    {
-        //
-    }
+    protected function setUp(): void {}
 
     public static function make(?string $name = null): static
     {
@@ -249,6 +248,16 @@ class Action implements Arrayable
     public function iconButton(): static
     {
         $this->variant = 'icon';
+
+        return $this;
+    }
+
+    /**
+     * Set the action variant directly.
+     */
+    public function variant(?string $variant): static
+    {
+        $this->variant = $variant;
 
         return $this;
     }
