@@ -1,0 +1,60 @@
+name: Fix PHP Code Styling
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - '**.php'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - '**.php'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  php-code-styling:
+    runs-on: ubuntu-latest
+    name: Fix PHP Code Styling
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: dom, curl, libxml, mbstring, zip
+          coverage: none
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Run Laravel Pint
+        run: ./vendor/bin/pint
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: fix PHP code styling"
+          commit_user_name: "GitHub Actions"
+          commit_user_email: "actions@github.com"
+          commit_author: "GitHub Actions <actions@github.com>"
+          skip_dirty_check: false
