@@ -1,5 +1,5 @@
 @props([
-    'name',
+    'name' => 'alert-circle',
 ])
 
 @php

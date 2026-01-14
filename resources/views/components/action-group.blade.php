@@ -52,11 +52,11 @@
 @endphp
 
 @if($isDropdown)
-    <x-accelade::toggle class="relative">
+    <x-accelade::toggle class="relative inline-block">
         {{-- Dropdown trigger --}}
         <button
             type="button"
-            @click="toggle()"
+            @click.prevent="toggle()"
             class="inline-flex items-center justify-center gap-1 rounded-lg {{ $buttonSize }} text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-slate-900 dark:focus:ring-indigo-400"
             @if($tooltip) title="{{ $tooltip }}" @endif
             aria-haspopup="true"
@@ -69,15 +69,14 @@
         </button>
 
         {{-- Dropdown menu --}}
-        <div
-            a-show="toggled"
-            a-cloak
-            @click.outside="close()"
-            class="absolute {{ $alignClass }} mt-2 w-48 rounded-lg bg-white dark:bg-slate-800 shadow-lg ring-1 ring-black/5 dark:ring-white/10 z-50"
-            role="menu"
-            aria-orientation="vertical"
-        >
-            <div class="py-1">
+        <x-accelade::transition show="toggled" animation="default">
+            <div
+                @click.outside="close()"
+                class="absolute {{ $alignClass }} mt-2 w-48 rounded-lg bg-white dark:bg-slate-800 shadow-lg ring-1 ring-black/5 dark:ring-white/10 z-50"
+                role="menu"
+                aria-orientation="vertical"
+            >
+                <div class="py-1">
                 @foreach($actions as $actionData)
                     @php
                         $actionIcon = $actionData['icon'] ?? null;
@@ -150,8 +149,9 @@
                         </button>
                     @endif
                 @endforeach
+                </div>
             </div>
-        </div>
+        </x-accelade::transition>
     </x-accelade::toggle>
 @else
     {{-- Inline actions (not dropdown) --}}
