@@ -194,3 +194,106 @@ export interface ExecuteOptions {
     /** Callback when complete (success or error) */
     onComplete?: () => void;
 }
+
+/**
+ * Schema field definition
+ */
+export interface SchemaField {
+    /** Field type */
+    type: string;
+
+    /** Field name */
+    name: string;
+
+    /** Field ID */
+    id: string;
+
+    /** Display label */
+    label?: string;
+
+    /** Placeholder text */
+    placeholder?: string;
+
+    /** Hint/helper text */
+    hint?: string;
+
+    /** Default value */
+    default?: unknown;
+
+    /** Is required */
+    required?: boolean;
+
+    /** Is disabled */
+    disabled?: boolean;
+
+    /** Is readonly */
+    readonly?: boolean;
+
+    /** Is hidden */
+    hidden?: boolean;
+
+    /** Validation rules */
+    rules?: string[];
+
+    /** Additional field-specific options */
+    [key: string]: unknown;
+}
+
+/**
+ * Modal configuration parsed from button
+ */
+export interface ModalConfig {
+    /** Modal ID */
+    id: string;
+
+    /** Modal heading */
+    heading: string;
+
+    /** Modal description */
+    description?: string;
+
+    /** Submit button label */
+    submitLabel: string;
+
+    /** Cancel button label */
+    cancelLabel: string;
+
+    /** Modal icon */
+    icon?: string;
+
+    /** Icon color */
+    iconColor: string;
+
+    /** Modal width */
+    width: string;
+
+    /** Show as slide-over */
+    slideOver: boolean;
+
+    /** Action color */
+    color: string;
+
+    /** Use danger styling */
+    confirmDanger: boolean;
+
+    /** Schema fields */
+    schema: SchemaField[];
+
+    /** Default values for schema fields */
+    schemaDefaults: Record<string, unknown>;
+
+    /** Pre-rendered schema HTML (server-side rendered using Forms package) */
+    schemaHtml?: string;
+
+    /** Action token */
+    actionToken: string;
+
+    /** Action URL */
+    actionUrl: string;
+
+    /** HTTP method */
+    method: string;
+
+    /** Record data */
+    record?: unknown;
+}

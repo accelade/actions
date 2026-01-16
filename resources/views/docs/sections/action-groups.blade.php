@@ -38,13 +38,13 @@
                     $inlineGroup = \Accelade\Actions\ActionGroup::make([
                         \Accelade\Actions\Action::make('approve')
                             ->label('Approve')
-                            ->icon('check')
+                            ->icon('heroicon-o-check')
                             ->color('success')
                             ->size('sm')
                             ->action(fn () => \Accelade\Facades\Notify::success('Approved', 'Item approved!')),
                         \Accelade\Actions\Action::make('reject')
                             ->label('Reject')
-                            ->icon('x')
+                            ->icon('heroicon-o-x-mark')
                             ->color('danger')
                             ->size('sm')
                             ->action(fn () => \Accelade\Facades\Notify::danger('Rejected', 'Item rejected.')),
@@ -66,19 +66,19 @@
                     $customGroup = \Accelade\Actions\ActionGroup::make([
                         \Accelade\Actions\Action::make('duplicate')
                             ->label('Duplicate')
-                            ->icon('copy')
+                            ->icon('heroicon-o-document-duplicate')
                             ->action(fn () => \Accelade\Facades\Notify::success('Duplicated', 'Item duplicated!')),
                         \Accelade\Actions\Action::make('archive')
                             ->label('Archive')
-                            ->icon('archive')
+                            ->icon('heroicon-o-archive-box')
                             ->action(fn () => \Accelade\Facades\Notify::warning('Archived', 'Item archived.')),
                         \Accelade\Actions\Action::make('export')
                             ->label('Export')
-                            ->icon('download')
+                            ->icon('heroicon-o-arrow-down-tray')
                             ->action(fn () => \Accelade\Facades\Notify::info('Exporting', 'Export started...')),
                     ])
                         ->label('Actions')
-                        ->icon('settings')
+                        ->icon('heroicon-o-cog-6-tooth')
                         ->color('primary');
                 @endphp
 

@@ -30,11 +30,21 @@ declare global {
                     danger: boolean;
                 }) => Promise<{ confirmed: boolean }>;
             };
+            icons?: {
+                getSvg: (name: string) => Promise<string | null>;
+            };
         };
         AcceladeActions?: {
             manager: ActionManager;
             trigger: (selector: string | HTMLElement, options?: ExecuteOptions) => Promise<ActionResult>;
             version: string;
+        };
+        AcceladeForms?: {
+            init: () => void;
+            reinit: () => void;
+            Select: unknown;
+            Toggle: unknown;
+            [key: string]: unknown;
         };
     }
 }

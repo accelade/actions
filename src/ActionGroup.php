@@ -21,6 +21,13 @@ class ActionGroup implements Arrayable
     protected bool $dropdown = true;
 
     /**
+     * Layout type: 'dropdown' or 'button'.
+     */
+    protected string $layout = 'dropdown';
+
+    protected bool $divided = false;
+
+    /**
      * @var array<Action>
      */
     protected array $actions = [];
@@ -86,8 +93,45 @@ class ActionGroup implements Arrayable
     public function iconButton(): static
     {
         $this->dropdown = true;
+        $this->layout = 'dropdown';
 
         return $this;
+    }
+
+    /**
+     * Render actions as a button group (horizontal row of buttons).
+     */
+    public function button(): static
+    {
+        $this->dropdown = false;
+        $this->layout = 'button';
+
+        return $this;
+    }
+
+    /**
+     * Add dividers between actions (for button layout).
+     */
+    public function divided(bool $condition = true): static
+    {
+        $this->divided = $condition;
+
+        return $this;
+    }
+
+    public function getLayout(): string
+    {
+        return $this->layout;
+    }
+
+    public function isDivided(): bool
+    {
+        return $this->divided;
+    }
+
+    public function isButtonLayout(): bool
+    {
+        return $this->layout === 'button';
     }
 
     public function getLabel(): ?string
@@ -155,6 +199,8 @@ class ActionGroup implements Arrayable
             'tooltip' => $this->getTooltip(),
             'size' => $this->getSize(),
             'dropdown' => $this->isDropdown(),
+            'layout' => $this->getLayout(),
+            'divided' => $this->isDivided(),
             'actions' => array_map(
                 fn (Action $action) => $action->toArrayWithRecord($record),
                 $this->getVisibleActions($record)

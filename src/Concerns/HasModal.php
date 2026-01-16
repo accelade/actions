@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Accelade\Actions\Concerns;
 
+use Closure;
+
 trait HasModal
 {
     protected bool $requiresConfirmation = false;
 
     protected bool $hasModal = false;
 
-    protected ?string $modalHeading = null;
+    protected string|Closure|null $modalHeading = null;
 
-    protected ?string $modalDescription = null;
+    protected string|Closure|null $modalDescription = null;
 
     protected ?string $modalSubmitActionLabel = null;
 
@@ -31,6 +33,28 @@ trait HasModal
     protected ?string $modalWidth = null;
 
     protected bool $confirmDanger = false;
+
+    protected bool $stickyModalHeader = false;
+
+    protected bool $stickyModalFooter = false;
+
+    protected bool $closeModalByClickingAway = true;
+
+    protected bool $closeModalByEscaping = true;
+
+    protected ?string $modalAlignment = null;
+
+    /**
+     * @var array<mixed>|null
+     */
+    protected ?array $modalFooterActions = null;
+
+    /**
+     * @var array<mixed>|null
+     */
+    protected ?array $extraModalFooterActions = null;
+
+    protected string $modalFooterActionsAlignment = 'end';
 
     public function requiresConfirmation(bool $condition = true): static
     {
@@ -54,14 +78,14 @@ trait HasModal
         return $this->hasModal || $this->requiresConfirmation;
     }
 
-    public function modalHeading(?string $heading): static
+    public function modalHeading(string|Closure|null $heading): static
     {
         $this->modalHeading = $heading;
 
         return $this;
     }
 
-    public function modalDescription(?string $description): static
+    public function modalDescription(string|Closure|null $description): static
     {
         $this->modalDescription = $description;
 
@@ -101,9 +125,13 @@ trait HasModal
         return $this->requiresConfirmation;
     }
 
-    public function getModalHeading(): ?string
+    public function getModalHeading(mixed $record = null): ?string
     {
         if ($this->modalHeading !== null) {
+            if ($this->modalHeading instanceof Closure) {
+                return ($this->modalHeading)($record);
+            }
+
             return $this->modalHeading;
         }
 
@@ -118,9 +146,13 @@ trait HasModal
         return null;
     }
 
-    public function getModalDescription(): ?string
+    public function getModalDescription(mixed $record = null): ?string
     {
         if ($this->modalDescription !== null) {
+            if ($this->modalDescription instanceof Closure) {
+                return ($this->modalDescription)($record);
+            }
+
             return $this->modalDescription;
         }
 
@@ -231,5 +263,139 @@ trait HasModal
     public function isConfirmDanger(): bool
     {
         return $this->confirmDanger;
+    }
+
+    /**
+     * Make the modal header sticky (fixed at top when scrolling).
+     */
+    public function stickyModalHeader(bool $condition = true): static
+    {
+        $this->stickyModalHeader = $condition;
+
+        return $this;
+    }
+
+    public function hasStickyModalHeader(): bool
+    {
+        return $this->stickyModalHeader;
+    }
+
+    /**
+     * Make the modal footer sticky (fixed at bottom when scrolling).
+     */
+    public function stickyModalFooter(bool $condition = true): static
+    {
+        $this->stickyModalFooter = $condition;
+
+        return $this;
+    }
+
+    public function hasStickyModalFooter(): bool
+    {
+        return $this->stickyModalFooter;
+    }
+
+    /**
+     * Control if modal can be closed by clicking outside.
+     */
+    public function closeModalByClickingAway(bool $condition = true): static
+    {
+        $this->closeModalByClickingAway = $condition;
+
+        return $this;
+    }
+
+    public function canCloseModalByClickingAway(): bool
+    {
+        return $this->closeModalByClickingAway;
+    }
+
+    /**
+     * Control if modal can be closed by pressing Escape.
+     */
+    public function closeModalByEscaping(bool $condition = true): static
+    {
+        $this->closeModalByEscaping = $condition;
+
+        return $this;
+    }
+
+    public function canCloseModalByEscaping(): bool
+    {
+        return $this->closeModalByEscaping;
+    }
+
+    /**
+     * Set the modal content alignment.
+     *
+     * @param  string  $alignment  'start', 'center', 'end'
+     */
+    public function modalAlignment(?string $alignment): static
+    {
+        $this->modalAlignment = $alignment;
+
+        return $this;
+    }
+
+    public function getModalAlignment(): ?string
+    {
+        return $this->modalAlignment;
+    }
+
+    /**
+     * Replace the default modal footer actions.
+     *
+     * @param  array<mixed>  $actions
+     */
+    public function modalFooterActions(array $actions): static
+    {
+        $this->modalFooterActions = $actions;
+
+        return $this;
+    }
+
+    /**
+     * Add extra actions to the modal footer.
+     *
+     * @param  array<mixed>  $actions
+     */
+    public function extraModalFooterActions(array $actions): static
+    {
+        $this->extraModalFooterActions = $actions;
+
+        return $this;
+    }
+
+    /**
+     * @return array<mixed>|null
+     */
+    public function getModalFooterActions(): ?array
+    {
+        return $this->modalFooterActions;
+    }
+
+    /**
+     * @return array<mixed>|null
+     */
+    public function getExtraModalFooterActions(): ?array
+    {
+        return $this->extraModalFooterActions;
+    }
+
+    /**
+     * Set the modal footer actions alignment.
+     *
+     * @param  string  $alignment  'start', 'center', 'end', 'between'
+     */
+    public function modalFooterActionsAlignment(string $alignment): static
+    {
+        $this->modalFooterActionsAlignment = $alignment;
+
+        return $this;
+    }
+
+    public function getModalFooterActionsAlignment(): string
+    {
+        return $this->modalFooterActionsAlignment;
     }
 }

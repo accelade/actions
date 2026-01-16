@@ -6,10 +6,15 @@ namespace Accelade\Actions;
 
 use Accelade\Actions\Concerns\CanBeHidden;
 use Accelade\Actions\Concerns\HasColor;
+use Accelade\Actions\Concerns\HasDataMutation;
 use Accelade\Actions\Concerns\HasIcon;
 use Accelade\Actions\Concerns\HasLabel;
+use Accelade\Actions\Concerns\HasLifecycle;
 use Accelade\Actions\Concerns\HasModal;
+use Accelade\Actions\Concerns\HasSchema;
+use Accelade\Actions\Concerns\HasSuccessHandling;
 use Accelade\Actions\Concerns\HasUrl;
+use Accelade\Actions\Concerns\HasWizard;
 use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Facades\Crypt;
@@ -19,10 +24,15 @@ class Action implements Arrayable
 {
     use CanBeHidden;
     use HasColor;
+    use HasDataMutation;
     use HasIcon;
     use HasLabel;
+    use HasLifecycle;
     use HasModal;
+    use HasSchema;
+    use HasSuccessHandling;
     use HasUrl;
+    use HasWizard;
 
     protected ?string $name = null;
 
@@ -81,6 +91,14 @@ class Action implements Arrayable
         $this->action = $action;
 
         return $this;
+    }
+
+    /**
+     * Alias for action() - Filament compatibility.
+     */
+    public function using(?Closure $action): static
+    {
+        return $this->action($action);
     }
 
     public function authorize(?Closure $authorize): static
@@ -253,6 +271,16 @@ class Action implements Arrayable
     }
 
     /**
+     * Set the action variant to 'badge'.
+     */
+    public function badge(): static
+    {
+        $this->variant = 'badge';
+
+        return $this;
+    }
+
+    /**
      * Set the action variant directly.
      */
     public function variant(?string $variant): static
@@ -348,15 +376,29 @@ class Action implements Arrayable
             'openUrlInNewTab' => $this->shouldOpenUrlInNewTab(),
             'requiresConfirmation' => $this->getRequiresConfirmation(),
             'hasModal' => $this->hasModal(),
-            'modalHeading' => $this->getModalHeading(),
-            'modalDescription' => $this->getModalDescription(),
+            'modalHeading' => $this->getModalHeading($record),
+            'modalDescription' => $this->getModalDescription($record),
             'modalSubmitActionLabel' => $this->getModalSubmitActionLabel(),
             'modalCancelActionLabel' => $this->getModalCancelActionLabel(),
             'modalIcon' => $this->getModalIcon(),
             'modalIconColor' => $this->getModalIconColor(),
             'modalWidth' => $this->getModalWidth(),
+            'modalAlignment' => $this->getModalAlignment(),
             'confirmDanger' => $this->isConfirmDanger(),
             'slideOver' => $this->isSlideOver(),
+            'stickyModalHeader' => $this->hasStickyModalHeader(),
+            'stickyModalFooter' => $this->hasStickyModalFooter(),
+            'closeModalByClickingAway' => $this->canCloseModalByClickingAway(),
+            'closeModalByEscaping' => $this->canCloseModalByEscaping(),
+            'modalFooterActionsAlignment' => $this->getModalFooterActionsAlignment(),
+            'hasSchema' => $this->hasSchema(),
+            'schema' => $this->hasSchema() ? $this->getSchemaArray($record) : null,
+            'schemaDefaults' => $this->hasSchema() ? $this->getSchemaDefaults($record) : null,
+            // Wizard support
+            'hasWizardSteps' => $this->hasWizardSteps(),
+            'wizardSteps' => $this->hasWizardSteps() ? $this->getWizardStepsArray($record) : null,
+            'skippableWizardSteps' => $this->areWizardStepsSkippable(),
+            'startWizardStep' => $this->getStartWizardStep(),
             'isHidden' => $this->isHidden($record),
             'isDisabled' => $this->isDisabled(),
             'isOutlined' => $this->isOutlined(),
@@ -371,10 +413,16 @@ class Action implements Arrayable
             'preserveScroll' => $this->preserveScroll,
             'method' => $this->getMethod(),
             'spa' => $this->isSpa(),
+            // Success handling
+            'hasSuccessNotification' => $this->hasSuccessNotification(),
+            'successNotificationTitle' => $this->getSuccessNotificationTitle($record),
+            'successNotificationBody' => $this->getSuccessNotificationBody($record),
+            'successRedirectUrl' => $this->getSuccessRedirectUrl($record),
+            'failureNotificationTitle' => $this->getFailureNotificationTitle($record),
+            'failureNotificationBody' => $this->getFailureNotificationBody($record),
+            'failureRedirectUrl' => $this->getFailureRedirectUrl($record),
         ];
 
-        return array_filter($data, function ($value) {
-            return $value !== null && $value !== '';
-        });
+        return array_filter($data, fn ($value) => $value !== null && $value !== '');
     }
 }

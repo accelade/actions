@@ -184,16 +184,16 @@
 
                     // Labeled dropdown group
                     $labeledGroup = \Accelade\Actions\ActionGroup::make([
-                        \Accelade\Actions\Action::make('export-csv')->label('Export CSV')->icon('download')->action(function () {
+                        \Accelade\Actions\Action::make('export-csv')->label('Export CSV')->icon('heroicon-o-arrow-down-tray')->action(function () {
                             \Accelade\Facades\Notify::success('Export')->body('CSV export started');
                         }),
-                        \Accelade\Actions\Action::make('export-pdf')->label('Export PDF')->icon('file-text')->action(function () {
+                        \Accelade\Actions\Action::make('export-pdf')->label('Export PDF')->icon('heroicon-o-document-text')->action(function () {
                             \Accelade\Facades\Notify::success('Export')->body('PDF export started');
                         }),
-                        \Accelade\Actions\Action::make('print')->label('Print')->icon('printer')->action(function () {
+                        \Accelade\Actions\Action::make('print')->label('Print')->icon('heroicon-o-printer')->action(function () {
                             \Accelade\Facades\Notify::info('Print')->body('Preparing print preview');
                         }),
-                    ])->label('Export')->icon('download');
+                    ])->label('Export')->icon('heroicon-o-arrow-down-tray');
                 @endphp
 
                 <div class="text-center">
@@ -265,7 +265,7 @@
                         $colorAction = \Accelade\Actions\Action::make("color-{$color}")
                             ->label(ucfirst($color))
                             ->color($color)
-                            ->icon('circle')
+                            ->icon('heroicon-s-stop')
                             ->action(function () use ($color) {
                                 $method = in_array($color, ['danger', 'warning']) ? $color : (in_array($color, ['success']) ? 'success' : 'info');
                                 \Accelade\Facades\Notify::$method(ucfirst($color))->body("{$color} action clicked");
@@ -283,7 +283,7 @@
                             ->label(ucfirst($color))
                             ->color($color)
                             ->outlined()
-                            ->icon('circle')
+                            ->icon('heroicon-s-stop')
                             ->action(function () use ($color) {
                                 $method = in_array($color, ['danger', 'warning']) ? $color : (in_array($color, ['success']) ? 'success' : 'info');
                                 \Accelade\Facades\Notify::$method(ucfirst($color) . ' Outlined')->body("Outlined {$color} action");
@@ -303,7 +303,7 @@
                     @php
                         $sizeAction = \Accelade\Actions\Action::make("size-{$size}")
                             ->label(strtoupper($size))
-                            ->icon('check')
+                            ->icon('heroicon-o-check')
                             ->size($size)
                             ->action(function () use ($size) {
                                 \Accelade\Facades\Notify::success('Size: ' . strtoupper($size))->body("Size {$size} clicked");
@@ -322,18 +322,18 @@
                 @php
                     $buttonVariant = \Accelade\Actions\Action::make('button-variant')
                         ->label('Button')
-                        ->icon('mouse-pointer')
+                        ->icon('heroicon-o-cursor-arrow-rays')
                         ->variant('button')
                         ->action(fn () => \Accelade\Facades\Notify::info('Button Variant')->body('Default button style'));
 
                     $linkVariant = \Accelade\Actions\Action::make('link-variant')
                         ->label('Link Style')
-                        ->icon('link')
+                        ->icon('heroicon-o-link')
                         ->variant('link')
                         ->action(fn () => \Accelade\Facades\Notify::info('Link Variant')->body('Link-style button'));
 
                     $iconVariant = \Accelade\Actions\Action::make('icon-variant')
-                        ->icon('star')
+                        ->icon('heroicon-o-star')
                         ->variant('icon')
                         ->tooltip('Icon only button')
                         ->action(fn () => \Accelade\Facades\Notify::info('Icon Variant')->body('Icon-only button'));
@@ -364,7 +364,7 @@
                 @php
                     $confirmAction = \Accelade\Actions\Action::make('confirm-action')
                         ->label('Confirm Action')
-                        ->icon('check-circle')
+                        ->icon('heroicon-o-check-circle')
                         ->color('primary')
                         ->requiresConfirmation()
                         ->modalHeading('Confirm Action')
@@ -373,7 +373,7 @@
 
                     $dangerConfirm = \Accelade\Actions\Action::make('danger-confirm')
                         ->label('Danger Confirm')
-                        ->icon('alert-triangle')
+                        ->icon('heroicon-o-exclamation-triangle')
                         ->color('danger')
                         ->requiresConfirmation()
                         ->confirmDanger()
@@ -396,13 +396,13 @@
                 @php
                     $homeAction = \Accelade\Actions\Action::make('home')
                         ->label('Go Home')
-                        ->icon('home')
+                        ->icon('heroicon-o-home')
                         ->color('primary')
                         ->url('/');
 
                     $externalAction = \Accelade\Actions\Action::make('external')
                         ->label('GitHub')
-                        ->icon('external-link')
+                        ->icon('heroicon-o-arrow-top-right-on-square')
                         ->color('secondary')
                         ->outlined()
                         ->url('https://github.com')

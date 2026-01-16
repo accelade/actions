@@ -6,7 +6,7 @@ it('has delete defaults', function () {
     $action = DeleteAction::make();
 
     expect($action->getName())->toBe('delete');
-    expect($action->getIcon())->toBe('trash-2');
+    expect($action->getIcon())->toBe('heroicon-o-trash');
     expect($action->getColor())->toBe('danger');
     expect($action->getRequiresConfirmation())->toBeTrue();
     expect($action->isConfirmDanger())->toBeTrue();

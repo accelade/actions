@@ -15,7 +15,7 @@
                 @php
                     $confirmAction = \Accelade\Actions\Action::make('confirm-demo')
                         ->label('Confirm Action')
-                        ->icon('alert-circle')
+                        ->icon('heroicon-o-exclamation-circle')
                         ->color('primary')
                         ->requiresConfirmation()
                         ->modalHeading('Confirm Action')
@@ -58,7 +58,7 @@
                 @php
                     $publishAction = \Accelade\Actions\Action::make('publish')
                         ->label('Publish')
-                        ->icon('upload')
+                        ->icon('heroicon-o-arrow-up-tray')
                         ->color('success')
                         ->requiresConfirmation()
                         ->modalHeading('Publish to Production')
@@ -72,7 +72,7 @@
 
                     $archiveAction = \Accelade\Actions\Action::make('archive')
                         ->label('Archive')
-                        ->icon('archive')
+                        ->icon('heroicon-o-archive-box')
                         ->color('warning')
                         ->requiresConfirmation()
                         ->modalHeading('Archive Item')
@@ -98,7 +98,7 @@
                 @php
                     $logoutAction = \Accelade\Actions\Action::make('logout')
                         ->label('Logout')
-                        ->icon('log-out')
+                        ->icon('heroicon-o-arrow-right-on-rectangle')
                         ->color('secondary')
                         ->outlined()
                         ->requiresConfirmation()
