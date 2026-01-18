@@ -13,10 +13,10 @@ declare global {
     interface Window {
         Accelade?: {
             notify?: {
-                success: (title: string, message?: string) => void;
-                danger: (title: string, message?: string) => void;
-                warning: (title: string, message?: string) => void;
-                info: (title: string, message?: string) => void;
+                success: (title: string, message?: string, options?: { duration?: number }) => void;
+                danger: (title: string, message?: string, options?: { duration?: number }) => void;
+                warning: (title: string, message?: string, options?: { duration?: number }) => void;
+                info: (title: string, message?: string, options?: { duration?: number }) => void;
             };
             router?: {
                 navigate: (url: string, options?: Record<string, unknown>) => Promise<boolean>;
