@@ -196,9 +196,9 @@ class ActionsServiceProvider extends ServiceProvider
             // Main entry - no subgroup
             ['id' => 'actions', 'label' => 'Actions', 'icon' => '👆', 'markdown' => 'actions.md', 'description' => 'Filament-style action buttons for Blade', 'keywords' => ['action', 'button', 'click', 'execute', 'filament'], 'demo' => true, 'view' => 'actions::docs.sections.actions'],
             // Core subgroup
-            ['id' => 'action-modals', 'label' => 'Confirmation Modals', 'icon' => '⚠️', 'markdown' => 'modals.md', 'description' => 'Confirmation dialogs and modals for actions', 'keywords' => ['modal', 'confirmation', 'dialog', 'confirm', 'danger'], 'subgroup' => 'core'],
-            ['id' => 'action-groups', 'label' => 'Action Groups', 'icon' => '📚', 'markdown' => 'action-groups.md', 'description' => 'Dropdown menus of multiple actions', 'keywords' => ['group', 'dropdown', 'menu', 'multiple'], 'subgroup' => 'core'],
-            ['id' => 'bulk-actions', 'label' => 'Bulk Actions', 'icon' => '📦', 'markdown' => 'bulk-actions.md', 'description' => 'Actions that operate on multiple selected records', 'keywords' => ['bulk', 'batch', 'multiple', 'mass', 'selection'], 'subgroup' => 'core'],
+            ['id' => 'action-modals', 'label' => 'Confirmation Modals', 'icon' => '⚠️', 'markdown' => 'modals.md', 'description' => 'Confirmation dialogs and modals for actions', 'keywords' => ['modal', 'confirmation', 'dialog', 'confirm', 'danger'], 'subgroup' => 'core', 'demo' => true, 'view' => 'actions::docs.sections.modals'],
+            ['id' => 'action-groups', 'label' => 'Action Groups', 'icon' => '📚', 'markdown' => 'action-groups.md', 'description' => 'Dropdown menus of multiple actions', 'keywords' => ['group', 'dropdown', 'menu', 'multiple'], 'subgroup' => 'core', 'demo' => true, 'view' => 'actions::docs.sections.action-groups'],
+            ['id' => 'bulk-actions', 'label' => 'Bulk Actions', 'icon' => '📦', 'markdown' => 'bulk-actions.md', 'description' => 'Actions that operate on multiple selected records', 'keywords' => ['bulk', 'batch', 'multiple', 'mass', 'selection'], 'subgroup' => 'core', 'demo' => true, 'view' => 'actions::docs.sections.bulk-actions'],
         ];
     }
 
@@ -210,13 +210,13 @@ class ActionsServiceProvider extends ServiceProvider
     protected function getCrudDocSections(): array
     {
         return [
-            ['id' => 'create-action', 'label' => 'Create Action', 'icon' => '➕', 'markdown' => 'create-action.md', 'description' => 'Preset action for creating new records', 'keywords' => ['create', 'add', 'new', 'insert', 'preset'], 'subgroup' => 'crud'],
-            ['id' => 'edit-action', 'label' => 'Edit Action', 'icon' => '✏️', 'markdown' => 'edit-action.md', 'description' => 'Preset action for editing existing records', 'keywords' => ['edit', 'update', 'modify', 'change', 'preset'], 'subgroup' => 'crud'],
-            ['id' => 'delete-action', 'label' => 'Delete Action', 'icon' => '🗑️', 'markdown' => 'delete-action.md', 'description' => 'Preset action for deleting records with confirmation', 'keywords' => ['delete', 'remove', 'destroy', 'trash', 'preset', 'confirmation'], 'subgroup' => 'crud'],
-            ['id' => 'view-action', 'label' => 'View Action', 'icon' => '👁️', 'markdown' => 'view-action.md', 'description' => 'Preset action for viewing record details', 'keywords' => ['view', 'show', 'display', 'details', 'preview', 'preset'], 'subgroup' => 'crud'],
-            ['id' => 'force-delete-action', 'label' => 'Force Delete Action', 'icon' => '💀', 'markdown' => 'force-delete-action.md', 'description' => 'Permanently delete soft-deleted records', 'keywords' => ['force', 'delete', 'permanent', 'trash', 'soft-delete'], 'subgroup' => 'crud'],
-            ['id' => 'restore-action', 'label' => 'Restore Action', 'icon' => '♻️', 'markdown' => 'restore-action.md', 'description' => 'Restore soft-deleted records', 'keywords' => ['restore', 'undelete', 'recover', 'trash', 'soft-delete'], 'subgroup' => 'crud'],
-            ['id' => 'replicate-action', 'label' => 'Replicate Action', 'icon' => '📋', 'markdown' => 'replicate-action.md', 'description' => 'Duplicate existing records', 'keywords' => ['replicate', 'duplicate', 'copy', 'clone'], 'subgroup' => 'crud'],
+            ['id' => 'create-action', 'label' => 'Create Action', 'icon' => '➕', 'markdown' => 'create-action.md', 'description' => 'Preset action for creating new records', 'keywords' => ['create', 'add', 'new', 'insert', 'preset'], 'subgroup' => 'crud', 'demo' => true, 'view' => 'actions::docs.sections.create-action'],
+            ['id' => 'edit-action', 'label' => 'Edit Action', 'icon' => '✏️', 'markdown' => 'edit-action.md', 'description' => 'Preset action for editing existing records', 'keywords' => ['edit', 'update', 'modify', 'change', 'preset'], 'subgroup' => 'crud', 'demo' => true, 'view' => 'actions::docs.sections.edit-action'],
+            ['id' => 'delete-action', 'label' => 'Delete Action', 'icon' => '🗑️', 'markdown' => 'delete-action.md', 'description' => 'Preset action for deleting records with confirmation', 'keywords' => ['delete', 'remove', 'destroy', 'trash', 'preset', 'confirmation'], 'subgroup' => 'crud', 'demo' => true, 'view' => 'actions::docs.sections.delete-action'],
+            ['id' => 'view-action', 'label' => 'View Action', 'icon' => '👁️', 'markdown' => 'view-action.md', 'description' => 'Preset action for viewing record details', 'keywords' => ['view', 'show', 'display', 'details', 'preview', 'preset'], 'subgroup' => 'crud', 'demo' => true, 'view' => 'actions::docs.sections.view-action'],
+            ['id' => 'force-delete-action', 'label' => 'Force Delete Action', 'icon' => '💀', 'markdown' => 'force-delete-action.md', 'description' => 'Permanently delete soft-deleted records', 'keywords' => ['force', 'delete', 'permanent', 'trash', 'soft-delete'], 'subgroup' => 'crud', 'demo' => true, 'view' => 'actions::docs.sections.force-delete-action'],
+            ['id' => 'restore-action', 'label' => 'Restore Action', 'icon' => '♻️', 'markdown' => 'restore-action.md', 'description' => 'Restore soft-deleted records', 'keywords' => ['restore', 'undelete', 'recover', 'trash', 'soft-delete'], 'subgroup' => 'crud', 'demo' => true, 'view' => 'actions::docs.sections.restore-action'],
+            ['id' => 'replicate-action', 'label' => 'Replicate Action', 'icon' => '📋', 'markdown' => 'replicate-action.md', 'description' => 'Duplicate existing records', 'keywords' => ['replicate', 'duplicate', 'copy', 'clone'], 'subgroup' => 'crud', 'demo' => true, 'view' => 'actions::docs.sections.replicate-action'],
         ];
     }
 
@@ -228,11 +228,11 @@ class ActionsServiceProvider extends ServiceProvider
     protected function getUtilityDocSections(): array
     {
         return [
-            ['id' => 'export-action', 'label' => 'Export Action', 'icon' => '📤', 'markdown' => 'export-action.md', 'description' => 'Export data to various formats', 'keywords' => ['export', 'download', 'excel', 'csv', 'pdf'], 'subgroup' => 'utility'],
-            ['id' => 'import-action', 'label' => 'Import Action', 'icon' => '📥', 'markdown' => 'import-action.md', 'description' => 'Import data from files', 'keywords' => ['import', 'upload', 'excel', 'csv', 'file', 'plaintext', 'txt'], 'subgroup' => 'utility'],
-            ['id' => 'print-action', 'label' => 'Print Action', 'icon' => '🖨️', 'markdown' => 'print-action.md', 'description' => 'Print the current page, elements, or custom content', 'keywords' => ['print', 'printer', 'page', 'document', 'pdf'], 'subgroup' => 'utility'],
-            ['id' => 'copy-action', 'label' => 'Copy Action', 'icon' => '📋', 'markdown' => 'copy-action.md', 'description' => 'Copy values to clipboard', 'keywords' => ['copy', 'clipboard', 'paste', 'text'], 'subgroup' => 'utility'],
-            ['id' => 'action-api', 'label' => 'API Reference', 'icon' => '📖', 'markdown' => 'api-reference.md', 'description' => 'Complete API reference for Actions', 'keywords' => ['api', 'reference', 'methods', 'properties'], 'demo' => false, 'subgroup' => 'reference'],
+            ['id' => 'export-action', 'label' => 'Export Action', 'icon' => '📤', 'markdown' => 'export-action.md', 'description' => 'Export data to various formats', 'keywords' => ['export', 'download', 'excel', 'csv', 'pdf'], 'subgroup' => 'utility', 'demo' => true, 'view' => 'actions::docs.sections.export-action'],
+            ['id' => 'import-action', 'label' => 'Import Action', 'icon' => '📥', 'markdown' => 'import-action.md', 'description' => 'Import data from files', 'keywords' => ['import', 'upload', 'excel', 'csv', 'file', 'plaintext', 'txt'], 'subgroup' => 'utility', 'demo' => true, 'view' => 'actions::docs.sections.import-action'],
+            ['id' => 'print-action', 'label' => 'Print Action', 'icon' => '🖨️', 'markdown' => 'print-action.md', 'description' => 'Print the current page, elements, or custom content', 'keywords' => ['print', 'printer', 'page', 'document', 'pdf'], 'subgroup' => 'utility', 'demo' => true, 'view' => 'actions::docs.sections.print-action'],
+            ['id' => 'copy-action', 'label' => 'Copy Action', 'icon' => '📋', 'markdown' => 'copy-action.md', 'description' => 'Copy values to clipboard', 'keywords' => ['copy', 'clipboard', 'paste', 'text'], 'subgroup' => 'utility', 'demo' => true, 'view' => 'actions::docs.sections.copy-action'],
+            ['id' => 'action-api', 'label' => 'API Reference', 'icon' => '📖', 'markdown' => 'api-reference.md', 'description' => 'Complete API reference for Actions', 'keywords' => ['api', 'reference', 'methods', 'properties'], 'demo' => false, 'view' => 'actions::docs.sections.action-api', 'subgroup' => 'reference'],
         ];
     }
 }
