@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/accelade/accelade.git",
-                "reference": "8f81e901529b4cc56f49457ef43971f226f553b3"
+                "reference": "f326dd6f3db2c101b21c574278abdd89329288f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/accelade/accelade/zipball/8f81e901529b4cc56f49457ef43971f226f553b3",
-                "reference": "8f81e901529b4cc56f49457ef43971f226f553b3",
+                "url": "https://api.github.com/repos/accelade/accelade/zipball/f326dd6f3db2c101b21c574278abdd89329288f2",
+                "reference": "f326dd6f3db2c101b21c574278abdd89329288f2",
                 "shasum": ""
             },
             "require": {
@@ -89,7 +89,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-01-19T10:53:41+00:00"
+            "time": "2026-01-19T11:04:03+00:00"
         },
         {
             "name": "blade-ui-kit/blade-icons",
