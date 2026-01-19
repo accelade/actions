@@ -52,6 +52,12 @@ class Action implements Arrayable
 
     protected ?string $tooltip = null;
 
+    protected string $tooltipPosition = 'top';
+
+    protected ?string $tooltipTheme = null;
+
+    protected int $tooltipDelay = 0;
+
     protected ?string $cachedActionToken = null;
 
     protected bool $preserveState = true;
@@ -132,6 +138,27 @@ class Action implements Arrayable
     public function tooltip(?string $tooltip): static
     {
         $this->tooltip = $tooltip;
+
+        return $this;
+    }
+
+    public function tooltipPosition(string $position): static
+    {
+        $this->tooltipPosition = $position;
+
+        return $this;
+    }
+
+    public function tooltipTheme(?string $theme): static
+    {
+        $this->tooltipTheme = $theme;
+
+        return $this;
+    }
+
+    public function tooltipDelay(int $delay): static
+    {
+        $this->tooltipDelay = $delay;
 
         return $this;
     }
@@ -218,6 +245,52 @@ class Action implements Arrayable
     public function getTooltip(): ?string
     {
         return $this->tooltip;
+    }
+
+    public function getTooltipPosition(): string
+    {
+        return $this->tooltipPosition;
+    }
+
+    public function getTooltipTheme(): ?string
+    {
+        return $this->tooltipTheme;
+    }
+
+    public function getTooltipDelay(): int
+    {
+        return $this->tooltipDelay;
+    }
+
+    /**
+     * Get the tooltip configuration as JSON for the a-tooltip directive.
+     */
+    public function getTooltipConfig(): ?string
+    {
+        if ($this->tooltip === null) {
+            return null;
+        }
+
+        $config = ['content' => $this->tooltip];
+
+        if ($this->tooltipPosition !== 'top') {
+            $config['position'] = $this->tooltipPosition;
+        }
+
+        if ($this->tooltipTheme !== null) {
+            $config['theme'] = $this->tooltipTheme;
+        }
+
+        if ($this->tooltipDelay > 0) {
+            $config['delay'] = $this->tooltipDelay;
+        }
+
+        // If only content, return simple string for cleaner HTML
+        if (count($config) === 1) {
+            return $this->tooltip;
+        }
+
+        return json_encode($config, JSON_THROW_ON_ERROR);
     }
 
     public function getExtraAttributes(): array
@@ -349,6 +422,17 @@ class Action implements Arrayable
     }
 
     /**
+     * Render the action as HTML.
+     */
+    public function render(mixed $record = null): string
+    {
+        return view('actions::components.action', [
+            'action' => $this,
+            'record' => $record,
+        ])->render();
+    }
+
+    /**
      * Resolve the action's configuration based on record context.
      */
     public function resolveRecordContext(mixed $record): static
@@ -405,6 +489,10 @@ class Action implements Arrayable
             'size' => $this->getSize(),
             'variant' => $this->getVariant(),
             'tooltip' => $this->getTooltip(),
+            'tooltipPosition' => $this->getTooltipPosition(),
+            'tooltipTheme' => $this->getTooltipTheme(),
+            'tooltipDelay' => $this->getTooltipDelay(),
+            'tooltipConfig' => $this->getTooltipConfig(),
             'extraAttributes' => $this->getExtraAttributes(),
             'hasAction' => $this->action !== null,
             'actionUrl' => $this->getActionUrl(),

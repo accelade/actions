@@ -18,7 +18,7 @@ it('renders action button', function () {
 it('renders action with icon', function () {
     $action = Action::make('test')
         ->label('Save')
-        ->icon('check');
+        ->icon('heroicon-o-check');
 
     $view = $this->blade(
         '<x-accelade::action :action="$action" />',

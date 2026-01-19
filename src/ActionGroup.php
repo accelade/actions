@@ -16,6 +16,12 @@ class ActionGroup implements Arrayable
 
     protected ?string $tooltip = null;
 
+    protected string $tooltipPosition = 'top';
+
+    protected ?string $tooltipTheme = null;
+
+    protected int $tooltipDelay = 0;
+
     protected ?string $size = null;
 
     protected bool $dropdown = true;
@@ -72,6 +78,27 @@ class ActionGroup implements Arrayable
     public function tooltip(?string $tooltip): static
     {
         $this->tooltip = $tooltip;
+
+        return $this;
+    }
+
+    public function tooltipPosition(string $position): static
+    {
+        $this->tooltipPosition = $position;
+
+        return $this;
+    }
+
+    public function tooltipTheme(?string $theme): static
+    {
+        $this->tooltipTheme = $theme;
+
+        return $this;
+    }
+
+    public function tooltipDelay(int $delay): static
+    {
+        $this->tooltipDelay = $delay;
 
         return $this;
     }
@@ -154,6 +181,52 @@ class ActionGroup implements Arrayable
         return $this->tooltip;
     }
 
+    public function getTooltipPosition(): string
+    {
+        return $this->tooltipPosition;
+    }
+
+    public function getTooltipTheme(): ?string
+    {
+        return $this->tooltipTheme;
+    }
+
+    public function getTooltipDelay(): int
+    {
+        return $this->tooltipDelay;
+    }
+
+    /**
+     * Get the tooltip configuration as JSON for the a-tooltip directive.
+     */
+    public function getTooltipConfig(): ?string
+    {
+        if ($this->tooltip === null) {
+            return null;
+        }
+
+        $config = ['content' => $this->tooltip];
+
+        if ($this->tooltipPosition !== 'top') {
+            $config['position'] = $this->tooltipPosition;
+        }
+
+        if ($this->tooltipTheme !== null) {
+            $config['theme'] = $this->tooltipTheme;
+        }
+
+        if ($this->tooltipDelay > 0) {
+            $config['delay'] = $this->tooltipDelay;
+        }
+
+        // If only content, return simple string for cleaner HTML
+        if (count($config) === 1) {
+            return $this->tooltip;
+        }
+
+        return json_encode($config, JSON_THROW_ON_ERROR);
+    }
+
     public function getSize(): ?string
     {
         return $this->size;
@@ -197,6 +270,10 @@ class ActionGroup implements Arrayable
             'icon' => $this->getIcon(),
             'color' => $this->getColor(),
             'tooltip' => $this->getTooltip(),
+            'tooltipPosition' => $this->getTooltipPosition(),
+            'tooltipTheme' => $this->getTooltipTheme(),
+            'tooltipDelay' => $this->getTooltipDelay(),
+            'tooltipConfig' => $this->getTooltipConfig(),
             'size' => $this->getSize(),
             'dropdown' => $this->isDropdown(),
             'layout' => $this->getLayout(),

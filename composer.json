@@ -30,6 +30,7 @@
         "laravel/serializable-closure": "^1.0|^2.0"
     },
     "require-dev": {
+        "blade-ui-kit/blade-heroicons": "^2.6",
         "laravel/pint": "^1.18",
         "orchestra/testbench": "^9.0|^10.0",
         "pestphp/pest": "^3.0",

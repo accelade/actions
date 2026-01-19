@@ -4,21 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c070d8093686e2383ff3b4e1e5739b02",
+    "content-hash": "99609e2e644787c75660faea8db3717d",
     "packages": [
         {
             "name": "accelade/accelade",
             "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/accelade/accelade.git",
-                "reference": "8885263adbb4e4a0a82f194133f32d19ce900432"
-            },
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/accelade/accelade/zipball/8885263adbb4e4a0a82f194133f32d19ce900432",
-                "reference": "8885263adbb4e4a0a82f194133f32d19ce900432",
-                "shasum": ""
+                "type": "path",
+                "url": "../accelade",
+                "reference": "995889607874ff99b11b82e62fc4dec3eb703d9d"
             },
             "require": {
                 "blade-ui-kit/blade-icons": "^1.8",
@@ -38,14 +32,14 @@
             "type": "library",
             "extra": {
                 "laravel": {
-                    "aliases": {
-                        "Icons": "Accelade\\Facades\\Icons",
-                        "Notify": "Accelade\\Facades\\Notify",
-                        "Accelade": "Accelade\\Facades\\Accelade"
-                    },
                     "providers": [
                         "Accelade\\AcceladeServiceProvider"
-                    ]
+                    ],
+                    "aliases": {
+                        "Accelade": "Accelade\\Facades\\Accelade",
+                        "Notify": "Accelade\\Facades\\Notify",
+                        "Icons": "Accelade\\Facades\\Icons"
+                    }
                 }
             },
             "autoload": {
@@ -53,7 +47,39 @@
                     "Accelade\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Accelade\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "pest"
+                ],
+                "test:coverage": [
+                    "pest --coverage"
+                ],
+                "format": [
+                    "pint"
+                ],
+                "format:test": [
+                    "pint --test"
+                ],
+                "mago": [
+                    "./mago lint src/ || mago lint src/"
+                ],
+                "mago:fix": [
+                    "./mago lint src/ --fix || mago lint src/ --fix"
+                ],
+                "analyse": [
+                    "@format:test",
+                    "@mago"
+                ],
+                "ci": [
+                    "@analyse",
+                    "@test"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -68,7 +94,6 @@
             "description": "Reactive Blade templates with Vue, React, Svelte, Angular, or vanilla JavaScript",
             "homepage": "https://github.com/fadymondy/accelade",
             "keywords": [
-                "SPA",
                 "angular",
                 "blade",
                 "components",
@@ -76,20 +101,14 @@
                 "notifications",
                 "react",
                 "reactive",
+                "spa",
                 "svelte",
                 "vue"
             ],
-            "support": {
-                "issues": "https://github.com/accelade/accelade/issues",
-                "source": "https://github.com/accelade/accelade/tree/v1.0.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/fadymondy",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-01-18T08:04:07+00:00"
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "blade-ui-kit/blade-icons",
@@ -5969,6 +5988,75 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "blade-ui-kit/blade-heroicons",
+            "version": "2.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/driesvints/blade-heroicons.git",
+                "reference": "4553b2a1f6c76f0ac7f3bc0de4c0cfa06a097d19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/driesvints/blade-heroicons/zipball/4553b2a1f6c76f0ac7f3bc0de4c0cfa06a097d19",
+                "reference": "4553b2a1f6c76f0ac7f3bc0de4c0cfa06a097d19",
+                "shasum": ""
+            },
+            "require": {
+                "blade-ui-kit/blade-icons": "^1.6",
+                "illuminate/support": "^9.0|^10.0|^11.0|^12.0",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0",
+                "phpunit/phpunit": "^9.0|^10.5|^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "BladeUI\\Heroicons\\BladeHeroiconsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "BladeUI\\Heroicons\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Dries Vints",
+                    "homepage": "https://driesvints.com"
+                }
+            ],
+            "description": "A package to easily make use of Heroicons in your Laravel Blade views.",
+            "homepage": "https://github.com/blade-ui-kit/blade-heroicons",
+            "keywords": [
+                "Heroicons",
+                "blade",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/driesvints/blade-heroicons/issues",
+                "source": "https://github.com/driesvints/blade-heroicons/tree/2.6.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/driesvints",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.paypal.com/paypalme/driesvints",
+                    "type": "paypal"
+                }
+            ],
+            "time": "2025-02-13T20:53:33+00:00"
+        },
         {
             "name": "brianium/paratest",
             "version": "v7.8.4",
