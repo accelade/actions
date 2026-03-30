@@ -40,7 +40,7 @@
         "@playwright/test": "^1.58.2",
         "@types/node": "^25.5.0",
         "terser": "^5.46.1",
-        "typescript": "^5.7.0",
+        "typescript": "^6.0.2",
         "vite": "^7.3.1"
     },
     "keywords": [
