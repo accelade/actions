@@ -37,7 +37,7 @@
         "test:install": "playwright install chromium"
     },
     "devDependencies": {
-        "@playwright/test": "^1.62.0",
+        "@playwright/test": "^1.62.1",
         "@types/node": "^25.5.0",
         "terser": "^5.49.0",
         "typescript": "^5.7.0",
